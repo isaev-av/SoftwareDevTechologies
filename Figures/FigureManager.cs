@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -8,9 +9,11 @@ namespace Figures
     /// <summary>
     /// Manager for creating and printing figures
     /// </summary>
-    class FigureManager
+    public class FigureManager
     {
         private string Path { get; set; }
+
+        public FigureManager() { }
 
         public FigureManager(string path)
         {
@@ -24,18 +27,22 @@ namespace Figures
         {
             List<Figure> figures = new List<Figure>();
 
+            Trace.WriteLine("Starting to parse input file...");
             List<string[]> listWithMetadata = ParseMetadataFromFile();
             foreach (string[] line in listWithMetadata)
             {
                 switch (line[0].Trim())
                 {
                     case "r":
+                        Trace.WriteLine("Creating rectangle...");
                         figures.Add(FigureFactory.CreateRectangle(line));
                         break;
                     case "c":
+                        Trace.WriteLine("Creating circle...");
                         figures.Add(FigureFactory.CreateCircle(line));
                         break;
                     case "t":
+                        Trace.WriteLine("Creating triangle...");
                         figures.Add(FigureFactory.CreateTriangle(line));
                         break;
                 }
@@ -62,7 +69,7 @@ namespace Figures
             }
             else
             {
-                Console.Write("Can not parse number of figures");
+                Trace.TraceError("Can not parse number of figures");
             }
             return listWithMetadata;
         }
